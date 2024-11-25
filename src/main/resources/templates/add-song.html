@@ -1,0 +1,40 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Songs Homepage - Welcome to My Music Store</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to My Music Store</h1>
+</header>
+<main>
+    <form th:action="@{${url} + ${song.id}}" method="post">
+        <label>Title:</label>
+        <input type="text" name="title" th:value="${song.title}" required/>
+        <br/>
+        <label>Track ID:</label>
+        <input type="text" name="trackId" th:value="${song.trackId}" required/>
+        <br/>
+        <label>Genre:</label>
+        <input type="text" name="genre" th:value="${song.genre}" required/>
+        <br/>
+        <label>Release Year:</label>
+        <input type="number" name="releaseYear" th:value="${song.releaseYear}" required/>
+        <br/>
+        <label>Album:</label>
+        <select name="albumId" required>
+            <option th:each="album : ${albums}" th:value="${album.id}" th:text="${album.name}"
+                    th:selected="${album.id} == ${song.album.id}"></option>
+        </select>
+        <br/>
+        <button type="submit">Save</button>
+    </form>
+</main>
+</body>
+</html>
