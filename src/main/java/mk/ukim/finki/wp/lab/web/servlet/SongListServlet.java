@@ -6,7 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
+import mk.ukim.finki.wp.lab.service.ImplementedSong;
 import mk.ukim.finki.wp.lab.service.SongService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.web.IWebExchange;
@@ -17,11 +20,18 @@ import java.io.IOException;
 @WebServlet(name="Songs", urlPatterns = "/listSongs")
 public class SongListServlet extends HttpServlet {
     SpringTemplateEngine template;
-    SongService service;
+    private ImplementedSong songs;
 
-    public SongListServlet(SpringTemplateEngine template, SongService service) {
+    public SongListServlet(SpringTemplateEngine template, ImplementedSong service) {
         this.template = template;
-        this.service = service;
+        this.songs = service;
+    }
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+        songs = context.getBean(ImplementedSong.class);
     }
 
     @Override
@@ -30,7 +40,7 @@ public class SongListServlet extends HttpServlet {
                 .buildApplication(getServletContext())
                 .buildExchange(req, resp);
         WebContext context = new WebContext(webExchange);
-        context.setVariable("songs", DataHolder.songs);
+        context.setVariable("songs", songs.listSongs());
         this.template.process("listSongs.html", context, resp.getWriter());
     }
 }

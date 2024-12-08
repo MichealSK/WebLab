@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import mk.ukim.finki.wp.lab.bootstrap.DataHolder;
@@ -9,15 +10,26 @@ import java.util.List;
 
 @Data
 @Getter
+@Entity
 public class Song {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String trackId;
     String title;
     String genre;
     int releaseYear;
-    List<Artist> performers;
+    @ManyToMany
+    List<Artist> performers = new ArrayList<>();
+    @ManyToOne
     Album album = null;
 
+    public Song(){
+        this.trackId = "";
+        this.title = "";
+        this.genre = "";
+        this.releaseYear = 2000;
+    }
     public Song(Long id, String trackId, String title, String genre, int releaseYear, List<Artist> performers) {
         this.id = id;
         this.trackId = trackId;
@@ -36,8 +48,7 @@ public class Song {
         this.performers = new ArrayList<Artist>();
     }
 
-    public Song(Long id, String trackId, String title, String genre, int releaseYear, Album album) {
-        this.id = id;
+    public Song(String trackId, String title, String genre, int releaseYear, Album album) {
         this.trackId = trackId;
         this.title = title;
         this.genre = genre;
