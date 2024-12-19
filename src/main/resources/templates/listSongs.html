@@ -1,4 +1,4 @@
-<html>
+<html xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <title>Songs Homepage - Welcome to My Music Store</title>
@@ -21,10 +21,10 @@
     <div th:each="song : ${songs}">
         <input type="radio" name="artistId" th:value="${song.trackId}" th:text="${song.title} + ', Genre: ' + ${song.genre} + ', Release Year: ' + ${song.releaseYear} + ', Album: ' + ${song.album.name}"/>
         <br/>
-        <form th:action="@{'/songs/edit/' + ${song.id}}" method="get" style="display: inline;">
+        <form th:action="@{'/songs/edit/' + ${song.id}}" method="get" style="display: inline;" sec:authorize="isAuthenticated()">
             <button type="submit">Edit</button>
         </form>
-        <form th:action="@{'/songs/delete/' + ${song.id}}" method="post" style="display: inline;">
+        <form th:action="@{'/songs/delete/' + ${song.id}}" method="post" style="display: inline;" sec:authorize="isAuthenticated()">
             <button type="submit">Delete</button>
         </form>
         <br/>
@@ -33,7 +33,7 @@
     <button type="button" onclick="redirectToArtistPage()">Submit</button>
     <br/>
     <br/>
-    <form action="/songs/add" method="get">
+    <form action="/songs/add" method="get" sec:authorize="isAuthenticated()">
         <button type="submit">Add New Song</button>
     </form>
 </main>
