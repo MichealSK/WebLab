@@ -10,6 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -30,13 +31,14 @@ public class SecurityConfig {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth
             .inMemoryAuthentication()
-            .withUser("user")
-            .password("password")
-            .roles("USER")
-            .and()
             .withUser("admin")
             .password("adminpassword")
-            .roles("ADMIN");
+            .roles("ADMIN")
+            .and()
+            .withUser("user")
+            .password("password")
+            .roles("USER");
+
 }
 
     @Bean
